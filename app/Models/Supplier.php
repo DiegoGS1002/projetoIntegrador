@@ -64,4 +64,9 @@ class Supplier extends Model
                 $model->id = Str::uuid();
             });
         }
+
+    public function products(): HasMany
+        {
+            return $this->hasMany(Product::class);
+        }
 }

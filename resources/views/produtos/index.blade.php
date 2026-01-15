@@ -59,6 +59,27 @@
         vertical-align: middle;
         margin-right: 5px;
     }
+    .delete{
+        background: none;
+        border: none;
+        color: red;
+        cursor: pointer;
+        font-size: 1em;
+        text-decoration: underline;
+        padding: 0;
+        font-family: inherit;
+    }
+
+    .edit button{
+        background: none;
+        border: none;
+        color: blue;
+        cursor: pointer;
+        font-size: 1em;
+        text-decoration: underline;
+        padding: 0;
+        font-family: inherit;
+    }
 
 </style>
 @extends('layouts.app')
@@ -100,8 +121,12 @@
                     <td>{{ $product->estoque }}</td>
                     <td>{{ $product->fornecedor }}</td>
                     <td>
-                        <a href="#">Editar</a>
-                        <a href="#">Excluir</a>
+                        <a href="{{ route('products.edit', $product->id) }}" class="edit">Editar</a> |
+                        <form action="{{ route('products.destroy', $product->id) }}" method="POST" style="display: inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" onclick="return confirm('Tem certeza que deseja excluir este produto?')" class="delete">Excluir</button>
+                        </form>
                     </td>
                 </tr>
             @endforeach
