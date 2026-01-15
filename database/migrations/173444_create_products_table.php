@@ -12,11 +12,11 @@ return new class extends Migration
     public function up(): void
     {
          Schema::create('products', function (Blueprint $table) {
-            $table->uuid('uuid')->primary(); // Chave primária UUID
+            $table->uuid('id')->primary(); // Chave primária UUID
 
             // Adiciona a chave estrangeira para o fornecedor
             $table->foreignUuid('suppliers_id')
-                ->constrained(table: 'suppliers', column: 'uuid') // Vincula à tabela 'suppliers'
+                ->constrained(table: 'suppliers', column: 'id') // Vincula à tabela 'suppliers'
                 ->cascadeOnDelete(); // Exclui produtos se o fornecedor for excluído
             $table->string('name'); // Nome do produto
             $table->string('sku')->unique()->nullable(); // Código único (opcional)

@@ -7,17 +7,19 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 class Supplier extends Model
 {
-    protected $table = 'suppliers';
+    use HasFactory, SoftDeletes;
 
     protected $keyType = 'string';
     public $incrementing = false;
 
     protected $fillable = [
         'name',
-        'socialName',
+        'social_name',
         'taxNumber',
+        'email',
         'address_zip_code',
         'address_street',
         'address_number',
@@ -25,8 +27,6 @@ class Supplier extends Model
         'address_district',
         'address_city',
         'address_state',
-        'latitude',
-        'longitude',
         'phone_number',
     ];
 
@@ -57,4 +57,11 @@ class Supplier extends Model
             $this->address_zip_code,
         ])));
     }
+
+    protected static function booted()
+        {
+            static::creating(function ($model) {
+                $model->id = Str::uuid();
+            });
+        }
 }

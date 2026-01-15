@@ -12,10 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('suppliers', function (Blueprint $table) {
-            $table->uuid()->primary();
+            $table->uuid('id')->primary();
+
             $table->string('name');
-            $table->string('socialName')->nullable();
+            $table->string('social_name')->nullable();
             $table->string('taxNumber')->unique();
+            $table->string('email')->nullable();
             $table->string('address_zip_code')->nullable();
             $table->string('address_street')->nullable();
             $table->string('address_number')->nullable();

@@ -59,7 +59,27 @@
         vertical-align: middle;
         margin-right: 5px;
     }
+    .delete{
+        background: none;
+        border: none;
+        color: red;
+        cursor: pointer;
+        font-size: 1em;
+        text-decoration: underline;
+        padding: 0;
+        font-family: inherit;
+    }
 
+    .edit button{
+        background: none;
+        border: none;
+        color: blue;
+        cursor: pointer;
+        font-size: 1em;
+        text-decoration: underline;
+        padding: 0;
+        font-family: inherit;
+    }
 </style>
 
 @extends('layouts.app')
@@ -75,7 +95,7 @@
                     </a>
                 </button>
                 <button class="download">
-                    <a href="{{ route('suppliers.print') }}">
+                    <a href="{{ route('suppliers.create') }}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -93,7 +113,9 @@
                         <th>Nome</th>
                         <th>Email</th>
                         <th>Telefone</th>
-                        <th>Endereço</th>
+                        <th>Cidade</th>
+                        <th>CEP</th>
+                        <th>Rua</th>
                         <th>CNPJ</th>
                         <th>Ações</th>
                     </tr>
@@ -101,14 +123,22 @@
                 <tbody class="">
                     @foreach($suppliers as $supplier)
                     <tr>
-                            <td>{{ $supplier->nome }}</td>
+                            <td>{{ $supplier->name }}</td>
                             <td>{{ $supplier->email }}</td>
-                            <td>{{ $supplier->telefone }}</td>
-                            <td>{{ $supplier->endereco }}</td>
-                            <td>{{ $supplier->cnpj }}</td>
+                            <td>{{ $supplier->phone_number }}</td>
+                            <td>{{ $supplier->address_city }}</td>
+                            <td>{{ $supplier->address_zip_code }}</td>
+                            <td>{{ $supplier->address_street }}</td>
+                            <td>{{ $supplier->taxNumber }}</td>
                             <td>
-                                <a href="#">Editar</a>
-                                <a href="#">Excluir</a>
+                                <a href="{{ route('suppliers.edit', $supplier) }}" class="edit">Editar</a>
+
+                                <form action="{{ route('suppliers.destroy', $supplier) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" onclick="return confirm('Deseja excluir este fornecedor?')" class="delete">
+                                        Excluir
+                                    </button>
                             </td>
                         </tr>
                         @endforeach

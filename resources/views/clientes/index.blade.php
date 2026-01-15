@@ -60,6 +60,28 @@
         margin-right: 5px;
     }
 
+    .delete button{
+        background: none;
+        border: none;
+        color: red;
+        cursor: pointer;
+        font-size: 1em;
+        text-decoration: underline;
+        padding: 0;
+        font-family: inherit;
+    }
+
+    .edit button{
+        background: none;
+        border: none;
+        color: blue;
+        cursor: pointer;
+        font-size: 1em;
+        text-decoration: underline;
+        padding: 0;
+        font-family: inherit;
+    }
+
     </style>
 
     @extends('layouts.app')
@@ -109,9 +131,9 @@
                             <td>{{ $client->address }}</td>
                             <td>{{ $client->taxNumber }}</td>
                             <td>
-                                <a href="{{ route('clients.edit', $client) }}">Editar</a>
+                                <a href="{{ route('clients.edit', $client) }}" class="edit">Editar</a>
 
-                                <form action="{{ route('clients.destroy', $client) }}" method="POST" style="display:inline;">
+                                <form class="delete" action="{{ route('clients.destroy', $client) }}" method="POST" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" onclick="return confirm('Deseja excluir este cliente?')">

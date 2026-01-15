@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 // Importar BelongsToMany
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Str;
 
 class Product extends Model
 {
@@ -21,6 +22,12 @@ class Product extends Model
     protected $primaryKey = 'uuid';
     public $incrementing = false;
     protected $keyType = 'string';
+    protected static function booted()
+        {
+            static::creating(function ($model) {
+                $model->id = Str::uuid();
+            });
+        }
 
     /**
      * The attributes that are mass assignable.
