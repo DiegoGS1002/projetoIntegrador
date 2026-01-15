@@ -28,7 +28,7 @@ class Product extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'company_id', // <-- Adicionar company_id aqui
+        'Supplier', // <-- Adicionar fornecedor aqui
         'name',
         'sku',
         'description',
@@ -45,8 +45,6 @@ class Product extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'standard_cost' => 'decimal:2', // Manter casts existentes
         'sale_price' => 'decimal:2',
-        'minimum_sale_price' => 'decimal:2',
     ];
 }

@@ -6,14 +6,13 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
+   /**
      * Run the migrations.
      */
     public function up(): void
     {
         Schema::create('suppliers', function (Blueprint $table) {
             $table->uuid()->primary();
-            $table->timestamps();
             $table->string('name');
             $table->string('socialName')->nullable();
             $table->string('taxNumber')->unique();
@@ -24,14 +23,9 @@ return new class extends Migration
             $table->string('address_district')->nullable();
             $table->string('address_city')->nullable();
             $table->string('address_state', 2)->nullable();
-
-            $table->decimal('latitude', 10, 7)->nullable();
-            $table->decimal('longitude', 10, 7)->nullable();
-            $table->string('telephone')->nullable();
-
+            $table->string('phone_number')->nullable();
             $table->timestamps();
             $table->softDeletes();
-
         });
     }
 

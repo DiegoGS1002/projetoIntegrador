@@ -27,12 +27,7 @@ class Supplier extends Model
         'address_state',
         'latitude',
         'longitude',
-        'telephone',
-    ];
-
-      protected $casts = [
-        'latitude' => 'decimal:7',
-        'longitude' => 'decimal:7',
+        'phone_number',
     ];
 
     public const STATUS_ACTIVE = 'active';

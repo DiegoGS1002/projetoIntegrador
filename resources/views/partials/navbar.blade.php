@@ -7,10 +7,10 @@
         </div>
 
         <ul>
-            <li><a href="{{ url('/') }}">Início</a></li>
-            <li><a href="{{ url('/product') }}">Produtos</a></li>
-            <li><a href="{{ url('/supplier') }}">Fornecedores</a></li>
-            <li><a href="{{ url('/client') }}">Clientes</a></li>
+            <li><a href="{{ route('home') }}">Início</a></li>
+            <li><a href="{{ route('products.index') }}">Produtos</a></li>
+            <li><a href="{{ route('suppliers.index') }}">Fornecedores</a></li>
+            <li><a href="{{ route('clients.index') }}">Clientes</a></li>
         </ul>
     </nav>
 </header>

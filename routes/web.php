@@ -1,20 +1,36 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ClientController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SupplierController;
 
 Route::get('/', function () {
     return view('home-page');
-});
+})->name('home');
 
-Route::get('/supplier', function () {
-    return view('supplier');
-});
+/*
+|--------------------------------------------------------------------------
+| Clients
+|--------------------------------------------------------------------------
+*/
+Route::resource('clients', ClientController::class);
 
-Route::get('/product', function () {
-    return view('product');
-});
+/*
+|--------------------------------------------------------------------------
+| Products
+|--------------------------------------------------------------------------
+*/
+Route::resource('products', ProductController::class);
 
-Route::get('/client', function () {
-    return view('clients');
-});
+/*
+|--------------------------------------------------------------------------
+| Suppliers
+|--------------------------------------------------------------------------
+*/
+Route::resource('suppliers', SupplierController::class);
 
+
+Route::resource('client', ClientController::class)->names('clients');
+Route::resource('product', ProductController::class)->names('products');
+Route::resource('supplier', SupplierController::class)->names('suppliers');

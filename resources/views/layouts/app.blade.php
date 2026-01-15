@@ -12,7 +12,13 @@
 
     @include('partials.navbar')
 
-    <main>
+    @if(session()->has('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    <main class="main-content">
         @yield('content')
     </main>
 
