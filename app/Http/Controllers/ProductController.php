@@ -9,11 +9,44 @@ use App\Models\Supplier; // IMPORTANTE
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::all(); // ou paginate(10)
+       $query = Product::with('supplier');
 
-        return view('produtos.index', compact('products'));
+    //  Pesquisa por nome
+    if ($request->filled('search')) {
+        $query->where('name', 'like', '%' . $request->search . '%');
+    }
+
+    //  Filtro por fornecedor
+    if ($request->filled('supplier_id')) {
+        $query->where('supplier_id', $request->supplier_id);
+    }
+
+    //  Filtro por unidade de medida
+    if ($request->filled('unit_of_measure')) {
+        $query->where('unit_of_measure', $request->unit_of_measure);
+    }
+    if ($request->filled('category')) {
+        $query->where('category', $request->category);
+    }
+    if ($request->expiration_date === 'expired') {
+        $query->whereDate('expiration_date', '<', now());
+    }
+
+    if ($request->expiration_date === 'valid') {
+        $query->whereDate('expiration_date', '>=', now());
+    }
+
+
+    if ($request->expiration_date === 'na') {
+        $query->whereNull('expiration_date');
+    }
+
+    $products = $query->paginate(10);
+    $suppliers = Supplier::all();
+
+    return view('produtos.index', compact('products', 'suppliers'));
     }
 
     public function create(){
@@ -24,55 +57,52 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'supplier'=> 'required|exists:suppliers,id', // <-- Validação para fornecedor
-            'name' => 'required|string|max:255',
-            'sku' => 'nullable|string|max:255|unique:products,sku',
-            'description' => 'nullable|string',
+            'name' => 'required|string|min:3|max:255|unique:products,name',
+            'ean' => 'required|string|size:13|unique:products,ean',
+            'description' => 'required|string|max:255',
             'unit_of_measure' => 'required|string',
-            'sale_price' => 'nullable|numeric|min:0',
+            'sale_price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
+            'expiration_date' => 'nullable|date',
+            'category' => 'required|string',
         ]);
 
-        Product::create([
-            'id' => Str::uuid(),
+        $product = Product::create([
             'name' => $request->name,
-            'sku' => $request->sku,
+            'ean' => $request->ean,
             'description' => $request->description,
             'unit_of_measure' => $request->unit_of_measure,
             'sale_price' => $request->sale_price,
             'stock' => $request->stock,
+            'expiration_date' => $request->expiration_date,
+            'category' => $request->category,
         ]);
 
         return redirect()
-            ->route('products.index')
-            ->with('success', 'Produto salvo com sucesso!');
+            ->route('products.suppliers.index', $product->id)
+            ->with('success', 'Produto cadastrado. Agora vincule um fornecedor.');
     }
 
-     public function update(Request $request, Product $product){
-        $request->validate([
-            'supplier'=> 'required|exists:suppliers,id', // <-- Validação para fornecedor
-            'name' => 'required|string|max:255',
-            'sku' => 'nullable|string|max:255|unique:products,sku',
-            'description' => 'nullable|string',
-            'unit_of_measure' => 'required|string',
-            'sale_price' => 'nullable|numeric|min:0',
-            'stock' => 'required|integer|min:0',
-        ]);
 
-        Product::create([
-            'supplier_id' => $request->supplier_id,
-            'name' => $request->name,
-            'sku' => $request->sku,
-            'description' => $request->description,
-            'unit_of_measure' => $request->unit_of_measure,
-            'sale_price' => $request->sale_price,
-            'stock' => $request->stock,
-        ]);
+    public function update(Request $request, Product $product)
+        {
+            $request->validate([
+                'name' => 'required|string|min:3|max:255|unique:products,name,' . $product->id,
+                'ean' => 'required|string|size:13|unique:products,ean,' . $product->id,
+                'description' => 'required|string|max:255',
+                'unit_of_measure' => 'required|string',
+                'sale_price' => 'required|numeric|min:0',
+                'stock' => 'required|integer|min:0',
+                'expiration_date' => 'nullable|date',
+                'category' => 'required|string',
+            ]);
 
-        return redirect()
-            ->route('products.index')
-            ->with('success', 'Produto salvo com sucesso!');
-    }
+            $product->update($request->all());
+
+            return redirect()
+                ->route('products.index')
+                ->with('success', 'Produto atualizado com sucesso!');
+        }
 
      public function destroy(Product $product){
         $product->delete();

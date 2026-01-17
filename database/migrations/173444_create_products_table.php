@@ -15,18 +15,21 @@ return new class extends Migration
             $table->uuid('id')->primary(); // Chave primária UUID
 
             // Adiciona a chave estrangeira para o fornecedor
-            $table->foreignUuid('supplier_id')
-                ->constrained('suppliers')
+            $table->foreignuuid('supplier_id')
+                ->nullable()
+                ->constrained()
+                ->unique()
                 ->cascadeOnDelete();// Exclui produtos se o fornecedor for excluído
-            $table->string('name'); // Nome do produto
-            $table->string('sku')->unique()->nullable(); // Código único (opcional)
-            $table->text('description')->nullable(); // Descrição (opcional)
-            $table->string('unit_of_measure')->default('unidade'); // Unidade de medida (ex: peça, kg, litro)
+            $table->string('name')->unique();
+            $table->string('ean')->unique(); // Código único
+            $table->text('description');
+            $table->string('unit_of_measure')->default('unidade');
             $table->decimal('sale_price', 8, 2)->nullable();
-            $table->integer('stock')->default(0); // Quantidade em estoque
-            $table->timestamps(); // created_at e updated_at
-            $table->softDeletes(); // deleted_at (para exclusão lógica)
-
+            $table->integer('stock')->default(0);
+            $table->date('expiration_date')->nullable();
+            $table->string('category');
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 

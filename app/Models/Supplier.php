@@ -2,10 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 class Supplier extends Model
@@ -28,6 +27,7 @@ class Supplier extends Model
         'address_city',
         'address_state',
         'phone_number',
+        'status',
     ];
 
     public const STATUS_ACTIVE = 'active';
@@ -51,7 +51,7 @@ class Supplier extends Model
             $this->address_street,
             $this->address_number,
             $this->address_complement,
-            $this->address_neighborhood,
+            $this->address_district,
             $this->address_city,
             $this->address_state,
             $this->address_zip_code,
@@ -59,14 +59,18 @@ class Supplier extends Model
     }
 
     protected static function booted()
-        {
-            static::creating(function ($model) {
-                $model->id = Str::uuid();
-            });
-        }
+    {
+        static::creating(function ($model) {
+            $model->id = Str::uuid();
+        });
+    }
 
-    public function products(): HasMany
-        {
-            return $this->hasMany(Product::class);
-        }
+    public function products(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Product::class,
+            'product_supplier'
+        );
+    }
+
 }

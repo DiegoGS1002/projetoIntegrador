@@ -1,28 +1,31 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Product extends Model
 {
     use HasFactory, SoftDeletes;
-    
+
     protected $primaryKey = 'id';
     public $incrementing = false;
     protected $keyType = 'string';
 
     protected $fillable = [
-        'supplier_id',
+        'id',
         'name',
-        'sku',
+        'ean',
         'description',
         'unit_of_measure',
         'sale_price',
         'stock',
+        'expiration_date',
+        'category',
     ];
 
     protected $casts = [
@@ -36,8 +39,14 @@ class Product extends Model
         });
     }
 
-    public function supplier(): BelongsTo
+    /**
+     * Relacionamento muitos-para-muitos com fornecedores
+     */
+    public function suppliers(): BelongsToMany
     {
-        return $this->belongsTo(Supplier::class);
+        return $this->belongsToMany(
+            Supplier::class,
+            'product_supplier'
+        );
     }
 }

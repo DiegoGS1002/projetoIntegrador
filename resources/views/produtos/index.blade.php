@@ -1,9 +1,6 @@
 <style>
     .container-products{
-        width: 100%;
-        margin-top: 70px;
         padding: 20px;
-        max-width: 1920px;
     }
     .button-create-products{
         margin-bottom: 20px;
@@ -70,7 +67,7 @@
         font-family: inherit;
     }
 
-    .edit button{
+    .edit{
         background: none;
         border: none;
         color: blue;
@@ -81,6 +78,51 @@
         font-family: inherit;
     }
 
+    .search-filter{
+        display: flex;
+        justify-content: end;
+        margin-bottom: 20px;
+        gap: 10px;
+    }
+    .search-bar{
+        padding: 8px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .filter{
+        padding: 8px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .filtrar, .limpar{
+        padding: 10px 18px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+     .titulo {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 90px;
+        margin-bottom: 20px;
+        max-width: 1920px;
+        width: 100%;
+
+    }
+
+    h1 {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 30px;
+        font-weight: bold;
+        color: #000;
+    }
 </style>
 @extends('layouts.app')
 
@@ -88,48 +130,115 @@
 
 @section('content')
 <main class="container-products">
-    <div class="button-create-products">
-        <button><a href="{{ route('products.create') }}">Adicionar Produto</a></button>
-        <button class="download">
-        <a href="{{ route('products.create') }}">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-            <polyline points="7 10 12 15 17 10"/>
-            <line x1="12" y1="15" x2="12" y2="3"/>
-        </svg>
-        Baixar Lista</a></button>
+    <div class="titulo">
+        <h1>Lista de Produtos</h1>
+        <div class="button-create-products">
+            <button><a href="{{ route('products.create') }}">Adicionar Produto</a></button>
+            <button class="download">
+            <a href="{{ route('products.create') }}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            Baixar Lista</a></button>
+        </div>
     </div>
+    <div class="search-filter">
+        <form method="GET" action="{{ route('products.index') }}" class="search-filter">
+            <input
+                type="text"
+                name="search"
+                placeholder="Pesquisar produto..."
+                value="{{ request('search') }}"
+                class="search-bar"
+            >
+
+            <select name="supplier_id" class="filter">
+                <option value="">Fornecedores</option>
+                @foreach($suppliers as $supplier)
+                    <option value="{{ $supplier->id }}"
+                        {{ request('supplier_id') == $supplier->id ? 'selected' : '' }}>
+                        {{ $supplier->social_name }}
+                    </option>
+                @endforeach
+            </select>
+
+            <select name="unit_of_measure" class="filter">
+                <option value="">Todas as unidades</option>
+                <option value="unidade">Unidade</option>
+                <option value="kg">Kg</option>
+                <option value="litro">Litro</option>
+                <option value="metro">Metro</option>
+            </select>
+
+            <select name="category" class="filter">
+                <option value="">Todas as categorias</option>
+                <option value="eletronico">Eletrônico</option>
+                <option value="alimentos">Alimentos</option>
+                <option value="vestuario">Vestuário</option>
+                <option value="outro">Outro</option>
+            </select>
+
+            <button type="submit" class="filtrar">Filtrar</button>
+            <a href="{{ route('products.index') }}" class="limpar">Limpar</a>
+        </form>
+    </div>
+    {{ $products->withQueryString()->links() }}
     <table class="table-products">
         <thead>
             <tr class="">
                 <th>Nome</th>
                 <th>Descrição</th>
-                <th>Preço</th>
                 <th>Estoque</th>
                 <th>Fornecedor</th>
+                <th>Data de Validade</th>
+                <th>Código de Barras</th>
+                <th>Categoria</th>
+                <th>Preço</th>
                 <th>Ações</th>
             </tr>
         </thead>
-        <tbody class="">
-            @foreach($products as $product)
+
+        <tbody>
+            @forelse($products as $product)
                 <tr>
-                    <td>{{ $product->nome }}</td>
-                    <td>{{ $product->descricao }}</td>
-                    <td>{{ $product->preco }}</td>
-                    <td>{{ $product->estoque }}</td>
-                    <td>{{ $product->fornecedor }}</td>
+                    <td>{{ $product->name }}</td>
+                    <td>{{ $product->description }}</td>
+                    <td>{{ $product->stock }}</td>
+                    <td>
+                        {{ $product->suppliers->first()->social_name ?? '-' }}
+                    </td>
+                    <td>
+                        @if ($product->expiration_date)
+                            {{ \Carbon\Carbon::parse($product->expiration_date)->format('d/m/Y') }}
+                        @else
+                            <span style="color:#888;">Não se aplica</span>
+                        @endif
+                    </td>
+                    <td>{{ $product->ean }}</td>
+                    <td>{{ $product->category }}</td>
+                    <td>R$ {{ number_format($product->sale_price, 2, ',', '.') }}</td>
                     <td>
                         <a href="{{ route('products.edit', $product->id) }}" class="edit">Editar</a> |
-                        <form action="{{ route('products.destroy', $product->id) }}" method="POST" style="display: inline;">
+                        <form action="{{ route('products.destroy', $product->id) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" onclick="return confirm('Tem certeza que deseja excluir este produto?')" class="delete">Excluir</button>
+                            <button type="submit"
+                                onclick="return confirm('Tem certeza que deseja excluir este produto?')"
+                                class="delete">
+                                Excluir
+                            </button>
                         </form>
                     </td>
                 </tr>
-            @endforeach
+            @empty
+                <tr>
+                    <td colspan="6">Nenhum produto encontrado</td>
+                </tr>
+            @endforelse
         </tbody>
     </table>
 </main>

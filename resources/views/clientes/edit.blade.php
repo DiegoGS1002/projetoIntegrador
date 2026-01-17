@@ -62,4 +62,6 @@
     <input type="text" name="taxNumber" placeholder="CNPJ" required>
 
     <button type="submit">Salvar</button>
+    <a class="btn-back" href="{{ route('clients.index') }}"> Voltar </a>
+
 </form>

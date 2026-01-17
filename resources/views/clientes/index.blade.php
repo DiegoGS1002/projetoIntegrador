@@ -1,9 +1,6 @@
 <style>
     .container-client{
-        width: 100%;
-        margin-top: 70px;
         padding: 20px;
-        max-width: 1920px;
     }
     .button-create-client{
         margin-bottom: 20px;
@@ -60,7 +57,7 @@
         margin-right: 5px;
     }
 
-    .delete button{
+    .delete{
         background: none;
         border: none;
         color: red;
@@ -71,7 +68,7 @@
         font-family: inherit;
     }
 
-    .edit button{
+    .edit{
         background: none;
         border: none;
         color: blue;
@@ -82,7 +79,25 @@
         font-family: inherit;
     }
 
-    </style>
+     .titulo {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 90px;
+        margin-bottom: 20px;
+        max-width: 1920px;
+        width: 100%;
+
+    }
+
+    h1 {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 30px;
+        font-weight: bold;
+        color: #000;
+    }
+
+</style>
 
     @extends('layouts.app')
 
@@ -90,24 +105,27 @@
 
     @section('content')
         <main class="container-client">
-            <div class="button-create-client">
-                <button>
-                    <a href="{{ route('clients.create') }}">
-                        Adicionar Cliente
-                    </a>
-                </button>
-                <button class="download">
-                    <a href="{{ route('clients.create') }}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                            <polyline points="7 10 12 15 17 10"/>
-                            <line x1="12" y1="15" x2="12" y2="3"/>
-                        </svg>
-                        Baixar Lista
-                    </a>
-            </button>
+            <div class="titulo">
+                <h1>Lista de Clientes</h1>
+                <div class="button-create-client">
+                    <button>
+                        <a href="{{ route('clients.create') }}">
+                            Adicionar Cliente
+                        </a>
+                    </button>
+                    <button class="download">
+                        <a href="{{ route('clients.create') }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                <polyline points="7 10 12 15 17 10"/>
+                                <line x1="12" y1="15" x2="12" y2="3"/>
+                            </svg>
+                            Baixar Lista
+                        </a>
+                    </button>
+                </div>
             </div>
             <table class="table-clients">
                 <thead>
@@ -133,10 +151,10 @@
                             <td>
                                 <a href="{{ route('clients.edit', $client) }}" class="edit">Editar</a>
 
-                                <form class="delete" action="{{ route('clients.destroy', $client) }}" method="POST" style="display:inline;">
+                                <formaction="{{ route('clients.destroy', $client) }}" method="POST" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" onclick="return confirm('Deseja excluir este cliente?')">
+                                    <button type="submit" onclick="return confirm('Deseja excluir este cliente?')" class="delete">
                                         Excluir
                                     </button>
                                 </form>

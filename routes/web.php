@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\ProductSupplierController;
 
 Route::get('/', function () {
     return view('home-page');
@@ -30,7 +31,18 @@ Route::resource('products', ProductController::class);
 */
 Route::resource('suppliers', SupplierController::class);
 
+Route::get(
+    '/products/{product}/suppliers',
+    [ProductSupplierController::class, 'index']
+)->name('products.suppliers.index');
 
-Route::resource('client', ClientController::class)->names('clients');
-Route::resource('product', ProductController::class)->names('products');
-Route::resource('supplier', SupplierController::class)->names('suppliers');
+Route::post(
+    '/products/{product}/suppliers',
+    [ProductSupplierController::class, 'store']
+)->name('products.suppliers.store');
+
+Route::delete(
+    '/products/{product}/suppliers/{supplier}',
+    [ProductSupplierController::class, 'destroy']
+)->name('products.suppliers.destroy');
+
