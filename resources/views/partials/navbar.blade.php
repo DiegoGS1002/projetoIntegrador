@@ -2,7 +2,7 @@
     <nav class="menu">
         <div class="logo">
             <a href="{{ url('/') }}">
-                <img src="{{ asset('images/logo.png') }}" alt="Logo">
+                <img src="{{ secure_asset('images/logo.png') }}" alt="Logo">
             </a>
         </div>
 
