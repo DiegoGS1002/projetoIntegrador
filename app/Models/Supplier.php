@@ -11,6 +11,7 @@ class Supplier extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $primaryKey = 'id';
     protected $keyType = 'string';
     public $incrementing = false;
 
@@ -27,23 +28,7 @@ class Supplier extends Model
         'address_city',
         'address_state',
         'phone_number',
-        'status',
     ];
-
-    public const STATUS_ACTIVE = 'active';
-    public const STATUS_INACTIVE = 'inactive';
-
-    public static function getStatusOptions(): array
-    {
-        return [
-            self::STATUS_ACTIVE => 'Ativo',
-            self::STATUS_INACTIVE => 'Inativo',
-        ];
-    }
-    public function getStatusLabelAttribute(): string
-    {
-        return self::getStatusOptions()[$this->status] ?? ucfirst($this->status);
-    }
 
     public function getFullAddress(): string
     {
@@ -61,7 +46,7 @@ class Supplier extends Model
     protected static function booted()
     {
         static::creating(function ($model) {
-            $model->id = Str::uuid();
+            $model->id = (string) Str::uuid();
         });
     }
 

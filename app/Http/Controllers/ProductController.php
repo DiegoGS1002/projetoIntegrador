@@ -5,53 +5,69 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use App\Models\Supplier; // IMPORTANTE
+use App\Models\Supplier;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
     public function index(Request $request)
     {
-       $query = Product::with('supplier');
+        // NÃO PAGINAR AQUI
+        $query = Product::with('suppliers');
 
-    //  Pesquisa por nome
-    if ($request->filled('search')) {
-        $query->where('name', 'like', '%' . $request->search . '%');
-    }
+        // Pesquisa por nome
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
 
-    //  Filtro por fornecedor
-    if ($request->filled('supplier_id')) {
-        $query->where('supplier_id', $request->supplier_id);
-    }
+        // Filtro por fornecedor (N:N)
+        if ($request->filled('supplier_id')) {
+            $query->whereHas('suppliers', function ($q) use ($request) {
+                $q->where('suppliers.id', $request->supplier_id);
+            });
+        }
 
-    //  Filtro por unidade de medida
-    if ($request->filled('unit_of_measure')) {
-        $query->where('unit_of_measure', $request->unit_of_measure);
-    }
-    if ($request->filled('category')) {
-        $query->where('category', $request->category);
-    }
-    if ($request->expiration_date === 'expired') {
-        $query->whereDate('expiration_date', '<', now());
-    }
+        // Unidade de medida
+        if ($request->filled('unit_of_measure')) {
+            $query->where('unit_of_measure', $request->unit_of_measure);
+        }
 
-    if ($request->expiration_date === 'valid') {
-        $query->whereDate('expiration_date', '>=', now());
-    }
+        //  Categoria
+        if ($request->filled('category')) {
+            $query->where('category', $request->category);
+        }
 
+        // Validade
+        if ($request->expiration_date === 'expired') {
+            $query->whereDate('expiration_date', '<', now());
+        }
 
-    if ($request->expiration_date === 'na') {
-        $query->whereNull('expiration_date');
-    }
+        if ($request->expiration_date === 'valid') {
+            $query->whereDate('expiration_date', '>=', now());
+        }
 
-    $products = $query->paginate(10);
-    $suppliers = Supplier::all();
+        if ($request->expiration_date === 'na') {
+            $query->whereNull('expiration_date');
+        }
 
-    return view('produtos.index', compact('products', 'suppliers'));
+        // PAGINAR SÓ NO FINAL
+        $products = $query->paginate(10)->withQueryString();
+
+        $suppliers = Supplier::all();
+
+        return view('produtos.index', compact('products', 'suppliers'));
     }
 
     public function create(){
         $suppliers = Supplier::all(); // busca fornecedores
             return view('produtos.create', compact('suppliers'));
+    }
+
+    public function edit(Product $product)
+    {
+        $suppliers = Supplier::all();
+
+        return view('produtos.edit', compact('product', 'suppliers'));
     }
 
     public function store(Request $request)
@@ -65,7 +81,14 @@ class ProductController extends Controller
             'stock' => 'required|integer|min:0',
             'expiration_date' => 'nullable|date',
             'category' => 'required|string',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
+
+        $imagePath = null;
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('products', 'public');
+        }
 
         $product = Product::create([
             'name' => $request->name,
@@ -76,6 +99,7 @@ class ProductController extends Controller
             'stock' => $request->stock,
             'expiration_date' => $request->expiration_date,
             'category' => $request->category,
+            'image' => $imagePath,
         ]);
 
         return redirect()
@@ -85,26 +109,38 @@ class ProductController extends Controller
 
 
     public function update(Request $request, Product $product)
-        {
-            $request->validate([
-                'name' => 'required|string|min:3|max:255|unique:products,name,' . $product->id,
-                'ean' => 'required|string|size:13|unique:products,ean,' . $product->id,
-                'description' => 'required|string|max:255',
-                'unit_of_measure' => 'required|string',
-                'sale_price' => 'required|numeric|min:0',
-                'stock' => 'required|integer|min:0',
-                'expiration_date' => 'nullable|date',
-                'category' => 'required|string',
-            ]);
+    {
+        $request->validate([
+            'name' => 'required|string|min:3|max:255|unique:products,name,' . $product->id,
+            'ean' => 'required|string|size:13|unique:products,ean,' . $product->id,
+            'description' => 'required|string|max:255',
+            'unit_of_measure' => 'required|string',
+            'sale_price' => 'required|numeric|min:0',
+            'stock' => 'required|integer|min:0',
+            'expiration_date' => 'nullable|date',
+            'category' => 'required|string',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+        ]);
 
-            $product->update($request->all());
-
-            return redirect()
-                ->route('products.index')
-                ->with('success', 'Produto atualizado com sucesso!');
+            if ($request->hasFile('image')) {
+        if ($product->image) {
+            Storage::disk('public')->delete($product->image);
         }
 
+        $product->image = $request->file('image')->store('products', 'public');
+        $product->save();
+        }
+
+        return redirect()
+            ->route('products.index')
+            ->with('success', 'Produto atualizado com sucesso!');
+    }
+
      public function destroy(Product $product){
+        if ($product->image) {
+            Storage::disk('public')->delete($product->image);
+        }
+
         $product->delete();
 
         return redirect()

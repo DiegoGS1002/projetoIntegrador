@@ -1,127 +1,6 @@
 @extends('layouts.app')
 @section('title', 'Adicionar Fornecedor')
-
-<style>
-    .alert-error{
-        background: #fdecea;
-        color: #b71c1c;
-        padding: 12px;
-        border-radius: 6px;
-        margin-bottom: 15px;
-        margin-top: 90px;
-    }
-
-    form {
-        width: 90%;
-        margin: 0 auto;
-        margin-top: 50px;
-    }
-
-    input {
-        margin-bottom: 10px;
-        padding: 8px;
-        font-size: 16px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-    }
-
-    button {
-        padding: 10px 18px;
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-    }
-
-    button:hover {
-        background-color: #45a049;
-    }
-
-    h1 {
-        text-align: center;
-        margin-bottom: 20px;
-        margin-top: 80px;
-    }
-
-    .supplier-form {
-        max-width: 1000px;
-        margin: 80px auto;
-        font-family: Arial, Helvetica, sans-serif;
-    }
-
-    .form-section {
-        margin-bottom: 30px;
-    }
-
-    .form-section h3 {
-        margin-bottom: 12px;
-        padding-bottom: 5px;
-        border-bottom: 2px solid #ddd;
-        font-size: 18px;
-        color: #333;
-    }
-
-    .grid {
-        display: grid;
-        gap: 12px;
-    }
-
-    .grid-1 {
-        grid-template-columns: 1fr;
-    }
-
-    .grid-2 {
-        grid-template-columns: 1fr 1fr;
-    }
-
-    .grid-5 {
-        grid-template-columns: 2fr 1fr 1.5fr 1.5fr 0.7fr;
-    }
-
-    label {
-        display: block;
-        font-size: 13px;
-        margin-bottom: 4px;
-        color: #555;
-    }
-
-    input {
-        width: 100%;
-        padding: 8px;
-        font-size: 15px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-    }
-
-    input:focus {
-        outline: none;
-        border-color: #4CAF50;
-    }
-
-    .btn-save {
-        padding: 12px 22px;
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-        font-size: 16px;
-    }
-    .btn-back {
-        padding: 12px 22px;
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-        font-size: 16px;
-    }
-
-    .btn-save:hover {
-        background-color: #45a049;
-    }
-</style>
+    <link rel="stylesheet" href="{{ asset('css/forms.css') }}">
 @section('content')
 
         @if ($errors->any())
@@ -202,7 +81,7 @@
             <div class="grid grid-2">
                 <div>
                     <label>Telefone</label>
-                    <input type="text" name="phone_number" value="{{ old('phone') }}" placeholder="(00) 00000-0000">
+                    <input type="text" name="phone_number" value="{{ old('phone_number') }}" placeholder="(00) 00000-0000">
                 </div>
 
                 <div>

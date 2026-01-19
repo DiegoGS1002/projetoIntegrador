@@ -15,7 +15,7 @@ class ProductSupplierController extends Controller
         $associatedSuppliers = $product->suppliers;
 
         return view(
-            'products.suppliers',
+            'produtos.suppliers',
             compact('product', 'suppliers', 'associatedSuppliers')
         );
     }

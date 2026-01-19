@@ -1,134 +1,6 @@
 @extends('layouts.app')
-    <style>
-        .alert-error{
-            background: #fdecea;
-            color: #b71c1c;
-            padding: 12px;
-            border-radius: 6px;
-            margin-bottom: 15px;
-            margin-top: 70px;
-        }
 
-        form {
-            width: 90%;
-            margin: 0 auto;
-            margin-top: 50px;
-        }
-
-        input {
-            margin-bottom: 10px;
-            padding: 8px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        button {
-            padding: 10px 18px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #45a049;
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-            margin-top: 80px;
-        }
-
-        .supplier-form {
-            max-width: 1000px;
-            margin: 80px auto;
-            font-family: Arial, Helvetica, sans-serif;
-        }
-
-        .form-section {
-            margin-bottom: 30px;
-        }
-
-        .form-section h3 {
-            margin-bottom: 12px;
-            padding-bottom: 5px;
-            border-bottom: 2px solid #ddd;
-            font-size: 18px;
-            color: #333;
-        }
-
-        .grid {
-            display: grid;
-            gap: 12px;
-        }
-
-        .grid-1 {
-            grid-template-columns: 1fr;
-        }
-
-        .grid-2 {
-            grid-template-columns: 1fr 1fr;
-        }
-
-        .grid-3 {
-            grid-template-columns: 1fr 1fr 1fr;
-        }
-
-        label {
-            display: block;
-            font-size: 13px;
-            margin-bottom: 4px;
-            color: #555;
-        }
-
-        input {
-            width: 100%;
-            padding: 8px;
-            font-size: 15px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        input:focus {
-            outline: none;
-            border-color: #4CAF50;
-        }
-
-        .btn-save {
-            padding: 12px 22px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        .btn-back {
-            padding: 12px 22px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        .btn-save:hover {
-            background-color: #45a049;
-        }
-
-        select{
-            margin-bottom: 10px;
-            padding: 8px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-    </style>
+<link rel="stylesheet" href="{{ asset('css/forms.css') }}">
 
 @section('content')
 @section('title', 'Adicionar Produto')
@@ -144,7 +16,7 @@
 
     <h1>Adicionar Produto</h1>
 
-    <form action="{{ route('products.store') }}" method="POST" class="supplier-form" id="productForm">
+    <form action="{{ route('products.store') }}" method="POST" class="supplier-form" id="productForm" enctype="multipart/form-data">
         @csrf
 
         {{-- Informações básicas --}}
@@ -160,7 +32,7 @@
                 <div>
                     <label>Código de Barras (GTIN/EAN):</label>
                     <input type="text" name="ean" placeholder="Insira o código de barras"
-                    value="{{ old('ean') }}">
+                    value="{{ old('ean') }}" required>
                 </div>
             </div>
         </div>
@@ -181,7 +53,7 @@
             <div class="grid grid-3">
                 <div>
                     <label>Unidade de Medida:</label>
-                    <select name="unit_of_measure" required>
+                    <select name="unit_of_measure" required class="select">
                         <option value="">Selecione a unidade</option>
                         <option value="unidade" {{ old('unit_of_measure') == 'unidade' ? 'selected' : '' }}>Unidade</option>
                         <option value="kg" {{ old('unit_of_measure') == 'kg' ? 'selected' : '' }}>Kg</option>
@@ -191,12 +63,12 @@
                 </div>
                 <div>
                     <label>Categoria:</label>
-                    <select name="category" class="filter">
+                    <select name="category" class="select">
                         <option value="">Todas as categorias</option>
-                        <option value="eletronico" {{ request('category') == 'eletronico' ? 'selected' : '' }}>Eletrônico</option>
-                        <option value="alimentos" {{ request('category') == 'alimentos' ? 'selected' : '' }}>Alimentos</option>
-                        <option value="vestuario" {{ request('category') == 'vestuario' ? 'selected' : '' }}>Vestuário</option>
-                        <option value="outro" {{ request('category') == 'outro' ? 'selected' : '' }}>Outro</option>
+                        <option value="eletronico" {{ old('category') == 'eletronico' ? 'selected' : '' }}>Eletrônico</option>
+                        <option value="alimentos" {{ old('category') == 'alimentos' ? 'selected' : '' }}>Alimentos</option>
+                        <option value="vestuario" {{ old('category') == 'vestuario' ? 'selected' : '' }}>Vestuário</option>
+                        <option value="outro" {{ old('category') == 'outro' ? 'selected' : '' }}>Outro</option>
                     </select>
                 </div>
             </div>
@@ -213,7 +85,7 @@
                 </div>
                 <div>
                     <label>Estoque</label>
-                    <input type="number" name="stock" placeholder="Quantidade disponíve"
+                    <input type="number" name="stock" placeholder="Quantidade disponível"
                     value="{{ old('stock') }}" required>
                 </div>
                 <div>
@@ -226,19 +98,15 @@
                 </div>
             </div>
         </div>
-        <a
-            href="#"
-            id="linkSupplier"
-            class="btn-save"
-            style="display:none; text-align:center;"
-        >
-            Vincular fornecedor (disponível após salvar)
-        </a>
+        {{-- Imagem --}}
+            <div class="grid grid-1">
+                <h2>Imagem do produto</h2>
+                <label>Imagem</label>
+                <input type="file" name="image" accept="image/*" required>
+            </div>
 
         <button type="submit" class="btn-save">Salvar Produto</button>
-        <a href="{{ route('products.index') }}" class="btn-back">
-            Voltar
-        </a>
+        <a href="{{ route('products.index') }}" class="btn-back"> Voltar </a>
     </form>
     <script>
         const form = document.getElementById('productForm');
