@@ -17,7 +17,6 @@ class Product extends Model
     protected $keyType = 'string';
 
     protected $fillable = [
-        'id',
         'name',
         'ean',
         'description',
@@ -26,10 +25,12 @@ class Product extends Model
         'stock',
         'expiration_date',
         'category',
+        'image'
     ];
 
     protected $casts = [
         'sale_price' => 'decimal:2',
+        'expiration_date' => 'date',
     ];
 
     protected static function booted()
@@ -39,14 +40,18 @@ class Product extends Model
         });
     }
 
-    /**
-     * Relacionamento muitos-para-muitos com fornecedores
-     */
     public function suppliers(): BelongsToMany
     {
         return $this->belongsToMany(
             Supplier::class,
             'product_supplier'
         );
+    }
+
+    public function getImageUrlAttribute()
+    {
+        return $this->image
+            ? asset('storage/products/' . $this->image)
+            : asset('images/no-image.png');
     }
 }

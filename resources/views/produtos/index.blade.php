@@ -189,7 +189,7 @@
     {{ $products->withQueryString()->links() }}
     <table class="table-products">
         <thead>
-            <tr class="">
+            <tr>
                 <th>Nome</th>
                 <th>Descrição</th>
                 <th>Estoque</th>
@@ -198,6 +198,7 @@
                 <th>Código de Barras</th>
                 <th>Categoria</th>
                 <th>Preço</th>
+                <th>Imagem</th>
                 <th>Ações</th>
             </tr>
         </thead>
@@ -209,7 +210,11 @@
                     <td>{{ $product->description }}</td>
                     <td>{{ $product->stock }}</td>
                     <td>
-                        {{ $product->suppliers->first()->social_name ?? '-' }}
+                        @if ($product->suppliers->isNotEmpty())
+                            {{ $product->suppliers->pluck('social_name')->join(', ') }}
+                        @else
+                            <span style="color:#888;">-</span>
+                        @endif
                     </td>
                     <td>
                         @if ($product->expiration_date)
@@ -221,6 +226,15 @@
                     <td>{{ $product->ean }}</td>
                     <td>{{ $product->category }}</td>
                     <td>R$ {{ number_format($product->sale_price, 2, ',', '.') }}</td>
+                    <td>
+                        @if ($product->image)
+                            <img
+                                src="{{ asset('storage/' . $product->image) }}"
+                                alt="Imagem do produto"
+                                style="max-width:100px; border-radius:8px;"
+                            >
+                        @endif
+                    </td>
                     <td>
                         <a href="{{ route('products.edit', $product->id) }}" class="edit">Editar</a> |
                         <form action="{{ route('products.destroy', $product->id) }}" method="POST" style="display:inline;">

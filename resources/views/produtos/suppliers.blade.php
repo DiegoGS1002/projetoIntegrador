@@ -1,8 +1,10 @@
 @extends('layouts.app')
 
+<link rel="stylesheet" href="{{ asset('css/forms.css') }}">
+
 @section('content')
 
-<div class="container">
+<div class="supplier-form">
 
     {{-- Mensagens --}}
     @if ($errors->any())
@@ -17,76 +19,103 @@
         </div>
     @endif
 
-    <h2>Associação de Fornecedor a Produto</h2>
-
-    <a href="{{ route('products.index') }}">← Voltar</a>
+    <h1>Associação de Fornecedor a Produto</h1>
 
     {{-- 🔹 Detalhes do Produto --}}
-    <h3>Detalhes do Produto</h3>
+    <div class="form-section">
+        <h3>Detalhes do Produto</h3>
 
-    <input type="text" value="{{ $product->name }}" readonly>
-    <input type="text" value="{{ $product->ean }}" readonly>
-    <textarea readonly>{{ $product->description }}</textarea>
+        <div class="grid grid-2">
+            <div>
+                <label>Produto</label>
+                <input type="text" value="{{ $product->name }}" readonly>
+            </div>
+
+            <div>
+                <label>EAN</label>
+                <input type="text" value="{{ $product->ean }}" readonly>
+            </div>
+        </div>
+
+        <div>
+            <label>Descrição</label>
+            <input readonly {{ $product->description }}>
+        </div>
+    </div>
 
     {{-- 🔹 Associação --}}
-    <h3>Associar Fornecedor</h3>
+    <div class="form-section">
+        <h3>Associar Fornecedor</h3>
 
-    @if ($associatedSuppliers->isEmpty())
-        <form method="POST" action="{{ route('products.suppliers.store', $product->id) }}">
-            @csrf
+        @if ($associatedSuppliers->isEmpty())
+            <form
+                method="POST"
+                action="{{ route('products.suppliers.store', $product->id) }}"
+                class="associate"
+            >
+                @csrf
 
-            <select name="supplier_id" required>
-                <option value="">Selecione um fornecedor</option>
-                @foreach ($suppliers as $supplier)
-                    <option value="{{ $supplier->id }}">
-                        {{ $supplier->social_name }} - {{ $supplier->taxNumber }}
-                    </option>
-                @endforeach
-            </select>
+                <label>Fornecedor</label>
+                <select name="supplier_id" required>
+                    <option value="">Selecione um fornecedor</option>
+                    @foreach ($suppliers as $supplier)
+                        <option value="{{ $supplier->id }}">
+                            {{ $supplier->social_name }} - {{ $supplier->taxNumber }}
+                        </option>
+                    @endforeach
+                </select>
 
-            <button type="submit">Associar Fornecedor</button>
-        </form>
-    @else
-        <p style="color:#555;">
-            Este produto já possui um fornecedor associado.
-        </p>
-    @endif
+                <button type="submit" class="btn-save">
+                    Associar Fornecedor
+                </button>
+            </form>
+        @else
+            <p style="color:#555;">
+                Este produto já possui um fornecedor associado.
+            </p>
+        @endif
+    </div>
 
     {{-- 🔹 Fornecedor Associado --}}
-    <h3>Fornecedor Associado</h3>
+    <div class="form-section">
+        <h3>Fornecedor Associado</h3>
 
-    @if ($associatedSuppliers->isEmpty())
-        <p>Nenhum fornecedor associado.</p>
-    @else
-        <table>
-            <thead>
-                <tr>
-                    <th>Fornecedor</th>
-                    <th>CNPJ</th>
-                    <th>Ação</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($associatedSuppliers as $supplier)
-                    <tr>
-                        <td>{{ $supplier->social_name }}</td>
-                        <td>{{ $supplier->taxNumber }}</td>
-                        <td>
-                            <form
-                                method="POST"
-                                action="{{ route('products.suppliers.destroy', [$product->id, $supplier->id]) }}"
-                            >
-                                @csrf
-                                @method('DELETE')
+        @if ($associatedSuppliers->isEmpty())
+            <p>Nenhum fornecedor associado.</p>
+        @else
+            <div class="associated-header grid grid-3">
+                <strong>Fornecedor</strong>
+                <strong>CNPJ</strong>
+                <strong>Ação</strong>
+            </div>
 
-                                <button type="submit">Desassociar</button>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    @endif
+            @foreach ($associatedSuppliers as $supplier)
+                <div class="associated-item grid grid-3">
+                    <div>{{ $supplier->social_name }}</div>
+                    <div>{{ $supplier->taxNumber }}</div>
+
+                    <form
+                        method="POST"
+                        action="{{ route('products.suppliers.destroy', [$product->id, $supplier->id]) }}"
+                    >
+                        @csrf
+                        @method('DELETE')
+
+                        <button type="submit" class="btn-remove">
+                            Desassociar
+                        </button>
+                    </form>
+                </div>
+            @endforeach
+        @endif
+    </div>
+
+    {{-- 🔹 Ações --}}
+    <div class="actions">
+        <a href="{{ route('products.index') }}" class="btn-back">
+            ← Voltar
+        </a>
+    </div>
 
 </div>
 
