@@ -6,7 +6,7 @@
 
     <title>@yield('title', 'Sistema de controle')</title>
 
-    <link rel="stylesheet" href="{{ asset('css/home.css') }}">
+    <link rel="stylesheet" href="{{ secure_asset('css/home.css') }}">
 </head>
 <body>
 
