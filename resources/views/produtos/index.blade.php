@@ -157,7 +157,7 @@
             >
 
             <select name="supplier_id" class="filter">
-                <option value="">Fornecedores</option>
+                <option value="">Todos os fornecedores</option>
                 @foreach($suppliers as $supplier)
                     <option value="{{ $supplier->id }}"
                         {{ request('supplier_id') == $supplier->id ? 'selected' : '' }}>
@@ -168,25 +168,32 @@
 
             <select name="unit_of_measure" class="filter">
                 <option value="">Todas as unidades</option>
-                <option value="unidade">Unidade</option>
-                <option value="kg">Kg</option>
-                <option value="litro">Litro</option>
-                <option value="metro">Metro</option>
+                <option value="unidade" {{ request('unit_of_measure') == 'unidade' ? 'selected' : '' }}>Unidade</option>
+                <option value="kg" {{ request('unit_of_measure') == 'kg' ? 'selected' : '' }}>Kg</option>
+                <option value="litro" {{ request('unit_of_measure') == 'litro' ? 'selected' : '' }}>Litro</option>
+                <option value="metro" {{ request('unit_of_measure') == 'metro' ? 'selected' : '' }}>Metro</option>
             </select>
 
             <select name="category" class="filter">
                 <option value="">Todas as categorias</option>
-                <option value="eletronico">Eletrônico</option>
-                <option value="alimentos">Alimentos</option>
-                <option value="vestuario">Vestuário</option>
-                <option value="outro">Outro</option>
+                <option value="eletronico" {{ request('category') == 'eletronico' ? 'selected' : '' }}>Eletrônico</option>
+                <option value="alimentos" {{ request('category') == 'alimentos' ? 'selected' : '' }}>Alimentos</option>
+                <option value="vestuario" {{ request('category') == 'vestuario' ? 'selected' : '' }}>Vestuário</option>
+                <option value="outro" {{ request('category') == 'outro' ? 'selected' : '' }}>Outro</option>
+            </select>
+
+            <select name="expiration_date" class="filter">
+                <option value="">Todos os produtos</option>
+                <option value="expired" {{ request('expiration_date') == 'expired' ? 'selected' : '' }}>Vencidos</option>
+                <option value="valid" {{ request('expiration_date') == 'valid' ? 'selected' : '' }}>Válidos</option>
+                <option value="na" {{ request('expiration_date') == 'na' ? 'selected' : '' }}>Sem validade</option>
             </select>
 
             <button type="submit" class="filtrar">Filtrar</button>
             <a href="{{ route('products.index') }}" class="limpar">Limpar</a>
         </form>
     </div>
-    {{ $products->withQueryString()->links() }}
+    {{ $products->links() }}
     <table class="table-products">
         <thead>
             <tr>

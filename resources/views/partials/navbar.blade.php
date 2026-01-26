@@ -2,7 +2,7 @@
     <nav class="menu">
         <div class="logo">
             <a href="{{ url('/') }}">
-                <img src="{{ secure_asset('images/logo.png') }}" alt="Logo">
+                <img src="{{ request()->secure() ? secure_asset('images/logo.png') : asset('images/logo.png') }}" alt="Logo">
             </a>
         </div>
 

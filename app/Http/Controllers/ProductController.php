@@ -51,7 +51,7 @@ class ProductController extends Controller
         }
 
         // PAGINAR SÓ NO FINAL
-        $products = $query->paginate(10)->withQueryString();
+        $products = $query->paginate(10);
 
         $suppliers = Supplier::all();
 
