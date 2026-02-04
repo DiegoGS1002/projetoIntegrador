@@ -213,3 +213,28 @@ h3{
     display: flex;
     justify-content: space-between;
 }
+
+/* Edit Clientes - Form styling */
+form[action*="clients.update"] {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    margin: 0 auto;
+    margin-top: 90px;
+}
+
+/* Textarea styling for edit forms */
+textarea {
+    margin-bottom: 10px;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: Arial, Helvetica, sans-serif;
+    width: 100%;
+}
+
+textarea:focus {
+    outline: none;
+    border-color: #4CAF50;
+}

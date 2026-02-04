@@ -99,4 +99,13 @@ class SupplierController extends Controller
             ->route('suppliers.index')
             ->with('success', 'Fornecedor deletado com sucesso!');
     }
+
+    /**
+     * Show printable list of suppliers
+     */
+    public function print()
+    {
+        $suppliers = Supplier::all();
+        return view('fornecedores.print', compact('suppliers'));
+    }
 }

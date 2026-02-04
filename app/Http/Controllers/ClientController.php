@@ -76,4 +76,13 @@ class ClientController extends Controller
             ->route('clients.index')
             ->with('success', 'Cliente deletado com sucesso!');
     }
+
+    /**
+     * Show printable list of clients
+     */
+    public function print()
+    {
+        $clients = Client::all();
+        return view('clientes.print', compact('clients'));
+    }
 }

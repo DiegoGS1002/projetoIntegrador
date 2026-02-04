@@ -10,6 +10,11 @@ Route::get('/', function () {
     return view('home-page');
 })->name('home');
 
+// Print/list export routes (moved before resource routes to avoid conflict with resource show routes)
+Route::get('/clients/print', [ClientController::class, 'print'])->name('clients.print');
+Route::get('/products/print', [ProductController::class, 'print'])->name('products.print');
+Route::get('/suppliers/print', [SupplierController::class, 'print'])->name('suppliers.print');
+
 /*
 |--------------------------------------------------------------------------
 | Clients
@@ -46,3 +51,7 @@ Route::delete(
     [ProductSupplierController::class, 'destroy']
 )->name('products.suppliers.destroy');
 
+// Print/list export routes
+Route::get('/clients/print', [ClientController::class, 'print'])->name('clients.print');
+Route::get('/products/print', [ProductController::class, 'print'])->name('products.print');
+Route::get('/suppliers/print', [SupplierController::class, 'print'])->name('suppliers.print');
