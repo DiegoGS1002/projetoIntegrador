@@ -1,6 +1,8 @@
 @extends('layouts.app')
 @section('title', 'Adicionar Fornecedor')
-    <link rel="stylesheet" href="{{ asset('css/forms.css') }}">
+
+    <link rel="stylesheet" href="{{ app()->environment() === 'production' ? secure_asset('css/forms.css') : asset('css/forms.css') }}">
+
 @section('content')
 
         @if ($errors->any())
