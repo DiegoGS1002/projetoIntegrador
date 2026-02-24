@@ -6,6 +6,8 @@
 
     <title>@yield('title', 'Sistema de controle')</title>
 
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
     <link rel="stylesheet" href="{{ app()->environment() === 'production' ? secure_asset('css/home.css') : asset('css/home.css') }}">
 </head>
 <body>

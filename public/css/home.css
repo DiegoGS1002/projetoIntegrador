@@ -8,7 +8,6 @@ body{
     min-height: 100vh;
     background-color: #f0f0f0;
     max-width: 1920px;
-
 }
 
 .container{
@@ -23,6 +22,7 @@ body{
     background-color: #c4c1c1;
     z-index: 1000;
     max-width: 1920px;
+    border-bottom: #000 solid 1px;
 }
 
 .menu{
@@ -32,7 +32,7 @@ body{
     flex-direction: row;
 }
 
-.menu ul{
+.menu > ul{
     list-style: none;
     display: flex;
     flex-direction: row;
@@ -68,3 +68,94 @@ body{
     right: 20px;
     z-index: 1100;
 }
+
+/* Dropdown menu styling */
+.menu .dropdown-menu{
+    background-color: #c4c1c1;
+    border: 1px solid #9f9b9b; /* borda um pouco mais escura */
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    min-width: 140px;
+    display: flex;
+    flex-direction: column;
+}
+
+.menu .dropdown-menu li{
+    list-style: none;
+}
+
+.menu .dropdown-menu a{
+    color: #000; /* letras pretas */
+    font-size: 15px; /* menor */
+    display: block;
+    padding: 8px 12px;
+}
+
+.menu .dropdown-menu a:hover{
+    background-color: rgba(0,0,0,0.06);
+}
+
+.titulo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 90px;
+    margin-bottom: 20px;
+    max-width: 1920px;
+    width: 100%;
+}
+
+.download svg{
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+.download a {
+    display: flex;
+    align-items: center;
+}
+
+.button-create{
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.button-create button{
+    padding: 10px 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.button-create button a{
+    text-decoration: none;
+    color: white;
+}
+
+.filter{
+        padding: 8px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+.filtrar, .limpar{
+    padding: 10px 18px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+h1 {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 30px;
+    font-weight: bold;
+    color: #000;
+}
+
+

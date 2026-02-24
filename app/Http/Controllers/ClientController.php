@@ -12,11 +12,11 @@ class ClientController extends Controller
     {
         $clients = Client::all(); // ou paginate(10)
 
-        return view('clientes.index', compact('clients'));
+        return view('cadastro.clientes.index', compact('clients'));
     }
 
     public function create(){
-        return view('clientes.create');
+        return view('cadastro.clientes.create');
     }
 
    public function store(Request $request)
@@ -65,7 +65,7 @@ class ClientController extends Controller
             'taxNumber' => $request->taxNumber,
         ]);
         return redirect()
-            ->route('clientes.index')
+            ->route('clients.index')
             ->with('success', 'Cliente atualizado com sucesso!');
     }
 
@@ -83,6 +83,6 @@ class ClientController extends Controller
     public function print()
     {
         $clients = Client::all();
-        return view('clientes.print', compact('clients'));
+        return view('cadastro.clientes.print', compact('clients'));
     }
 }

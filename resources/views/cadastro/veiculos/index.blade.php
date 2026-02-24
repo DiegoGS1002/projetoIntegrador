@@ -9,7 +9,7 @@
         gap: 10px;
     }
     .button-create-client button{
-        padding: 10px 18px;
+        padding: 10px 16px;
         background-color: #4CAF50;
         color: white;
         border: none;
@@ -79,16 +79,6 @@
         font-family: inherit;
     }
 
-     .titulo {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 90px;
-        margin-bottom: 20px;
-        max-width: 1920px;
-        width: 100%;
-
-    }
 
     h1 {
         font-family: Arial, Helvetica, sans-serif;
@@ -101,20 +91,20 @@
 
     @extends('layouts.app')
 
-    @section('title', 'Clientes')
+    @section('title', 'Veiculos')
 
     @section('content')
         <main class="container-client">
             <div class="titulo">
-                <h1>Lista de Clientes</h1>
+                <h1>Lista de veiculos</h1>
                 <div class="button-create-client">
                     <button>
-                        <a href="{{ route('clients.create') }}">
-                            Adicionar Cliente
+                        <a href="{{ route('vehicles.create') }}">
+                            Adicionar veiculo
                         </a>
                     </button>
                     <button class="download">
-                        <a href="{{ route('clients.print') }}">
+                        <a href="{{ route('vehicles.print') }}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -130,31 +120,31 @@
             <table class="table-clients">
                 <thead>
                     <tr class="table-header">
-                        <th>Nome</th>
-                        <th>Razão Social</th>
-                        <th>Email</th>
-                        <th>Telefone</th>
-                        <th>Endereço</th>
-                        <th>CNPJ</th>
+                        <th>Modelo</th>
+                        <th>Marca</th>
+                        <th>Ano</th>
+                        <th>Placa</th>
+                        <th>Cor</th>
+                        <th>Motorista</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody class="">
-                    @foreach($clients as $client)
+                    @foreach($vehicles as $vehicle)
                     <tr>
-                            <<td>{{ $client->name }}</td>
-                            <td>{{ $client->social_name }}</td>
-                            <td>{{ $client->email }}</td>
-                            <td>{{ $client->phone_number }}</td>
-                            <td>{{ $client->address }}</td>
-                            <td>{{ $client->taxNumber }}</td>
+                            <td>{{ $vehicle->model }}</td>
+                            <td>{{ $vehicle->brand }}</td>
+                            <td>{{ $vehicle->year }}</td>
+                            <td>{{ $vehicle->plate }}</td>
+                            <td>{{ $vehicle->color }}</td>
+                            <td>{{ $vehicle->driver }}</td>
                             <td>
-                                <a href="{{ route('clients.edit', $client) }}" class="edit">Editar</a>
+                                <a href="{{ route('vehicles.edit', $vehicle) }}" class="edit">Editar</a>
 
-                                <formaction="{{ route('clients.destroy', $client) }}" method="POST" style="display:inline;">
+                                <formaction="{{ route('vehicles.destroy', $vehicle) }}" method="POST" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" onclick="return confirm('Deseja excluir este cliente?')" class="delete">
+                                    <button type="submit" onclick="return confirm('Deseja excluir este veiculo?')" class="delete">
                                         Excluir
                                     </button>
                                 </form>

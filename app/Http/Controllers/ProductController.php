@@ -55,19 +55,19 @@ class ProductController extends Controller
 
         $suppliers = Supplier::all();
 
-        return view('produtos.index', compact('products', 'suppliers'));
+        return view('cadastro.produtos.index', compact('products', 'suppliers'));
     }
 
     public function create(){
         $suppliers = Supplier::all(); // busca fornecedores
-            return view('produtos.create', compact('suppliers'));
+            return view('cadastro.produtos.create', compact('suppliers'));
     }
 
     public function edit(Product $product)
     {
         $suppliers = Supplier::all();
 
-        return view('produtos.edit', compact('product', 'suppliers'));
+        return view('cadastro.produtos.edit', compact('product', 'suppliers'));
     }
 
     public function store(Request $request)

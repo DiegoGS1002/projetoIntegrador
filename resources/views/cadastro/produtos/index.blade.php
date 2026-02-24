@@ -1,20 +1,22 @@
 <style>
     .container-products{
-        padding: 20px;
+        padding: 25px;
     }
     .button-create-products{
         margin-bottom: 20px;
         display: flex;
         justify-content: flex-end;
-        gap: 10px;
+        gap: 15px;
     }
     .button-create-products button{
-        padding: 10px 18px;
+        padding: 6px 12px;
         background-color: #4CAF50;
         color: white;
-        border: none;
         border-radius: 6px;
         cursor: pointer;
+        align-items: center;
+        border: 1px solid #317033;
+        text-align: center;
     }
     .button-create-products button a{
         text-decoration: none;
@@ -52,10 +54,6 @@
         font-weight: bold;
     }
 
-    .download svg{
-        vertical-align: middle;
-        margin-right: 5px;
-    }
     .delete{
         background: none;
         border: none;
@@ -106,16 +104,6 @@
         border-radius: 6px;
         cursor: pointer;
     }
-     .titulo {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 90px;
-        margin-bottom: 20px;
-        max-width: 1920px;
-        width: 100%;
-
-    }
 
     h1 {
         font-family: Arial, Helvetica, sans-serif;
@@ -142,8 +130,7 @@
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
                 <polyline points="7 10 12 15 17 10"/>
                 <line x1="12" y1="15" x2="12" y2="3"/>
-            </svg>
-            Baixar Lista</a></button>
+            </svg> Baixar Lista</a></button>
         </div>
     </div>
     <div class="search-filter">

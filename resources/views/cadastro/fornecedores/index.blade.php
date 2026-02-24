@@ -1,6 +1,105 @@
 @extends('layouts.app')
 
-<style> .container-supplier{ padding: 20px; } .button-create-supplier{ margin-bottom: 20px; display: flex; justify-content: flex-end; gap: 10px; } .button-create-supplier button{ padding: 10px 18px; background-color: #4CAF50; color: white; border: none; border-radius: 6px; cursor: pointer; } .button-create-supplier button a{ text-decoration: none; color: white; } .table-supplier{ width: 100%; border-collapse: collapse; text-align: center; font-family: Arial, Helvetica, sans-serif; font-size: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); } .table-supplier th, .table-supplier td{ padding: 12px 10px; border: 1px solid #ddd; } .table-supplier tr:nth-child(even){ background-color: #f9f9f9; } .table-supplier tbody tr:hover{ background-color: #f1f1f1; } .table-supplier thead { background-color: #f2f2f2; } .table-supplier th { font-weight: bold; } .download svg{ vertical-align: middle; margin-right: 5px; } .delete{ background: none; border: none; color: red; cursor: pointer; font-size: 1em; text-decoration: underline; padding: 0; font-family: inherit; } .edit{ background: none; border: none; color: blue; cursor: pointer; font-size: 1em; text-decoration: underline; padding: 0; font-family: inherit; } .titulo { display: flex; justify-content: space-between; align-items: center; margin-top: 90px; margin-bottom: 20px; max-width: 1920px; width: 100%; } h1 { font-family: Arial, Helvetica, sans-serif; font-size: 30px; font-weight: bold; color: #000; }    .search-filter{display: flex;justify-content: end;margin-bottom: 20px;gap: 10px;}.search-bar{padding: 8px;font-size: 16px;border: 1px solid #ccc; border-radius: 4px;}</style>
+<style>
+
+.container-supplier{
+    padding: 20px;
+}
+
+.button-create-supplier{
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.button-create-supplier button{
+    padding: 6px 12px;
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    align-items: center;
+    border: 1px solid #317033;
+    text-align: center;
+}
+
+.button-create-supplier button a{
+    text-decoration: none;
+    color: white;
+}
+
+.table-supplier{
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.table-supplier th, .table-supplier td{
+    padding: 12px 10px;
+    border: 1px solid #ddd;
+}
+
+.table-supplier tr:nth-child(even){
+    background-color: #f9f9f9;
+}
+
+.table-supplier tbody tr:hover{
+    background-color: #f1f1f1;
+}
+
+.table-supplier thead {
+    background-color: #f2f2f2;
+}
+
+.table-supplier th {
+    font-weight: bold;
+}
+
+.delete{
+    background: none;
+    border: none;
+    color: red;
+    cursor: pointer;
+    font-size: 1em;
+    text-decoration: underline;
+    padding: 0;
+    font-family: inherit;
+}
+
+.edit{
+    background: none;
+    border: none; color: blue;
+    cursor: pointer;
+    font-size: 1em;
+    text-decoration: underline;
+    padding: 0;
+    font-family: inherit;
+}
+
+h1 {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 30px;
+    font-weight: bold; color: #000;
+}
+
+.search-filter{
+    display: flex;
+    justify-content: end;
+    margin-bottom: 20px;
+    gap: 10px;
+}
+.search-bar{
+        padding: 8px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        }
+
+</style>
 
 @section('title', 'Fornecedores')
 

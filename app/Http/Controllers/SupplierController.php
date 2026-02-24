@@ -12,7 +12,7 @@ class SupplierController extends Controller
     public function index()
     {
         $suppliers = Supplier::all();
-        return view('fornecedores.index', compact('suppliers'));
+        return view('cadastro.fornecedores.index', compact('suppliers'));
 
         if ($request->filled('search')) {
             $query->where('name', 'like', '%' . $request->search . '%');
@@ -21,12 +21,12 @@ class SupplierController extends Controller
 
     public function create()
     {
-        return view('fornecedores.create');
+        return view('cadastro.fornecedores.create');
     }
 
     public function edit(Supplier $supplier)
     {
-        return view('fornecedores.edit', compact('supplier'));
+        return view('cadastro.fornecedores.edit', compact('supplier'));
     }
 
     public function store(Request $request)
@@ -106,6 +106,6 @@ class SupplierController extends Controller
     public function print()
     {
         $suppliers = Supplier::all();
-        return view('fornecedores.print', compact('suppliers'));
+        return view('cadastro.fornecedores.print', compact('suppliers'));
     }
 }
